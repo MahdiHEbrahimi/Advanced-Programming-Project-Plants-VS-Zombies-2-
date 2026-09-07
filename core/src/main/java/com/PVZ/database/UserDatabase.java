@@ -18,12 +18,18 @@ public class UserDatabase {
     private static final Path DATA_DIR = findProjectRoot().resolve("core/src/main/resources/data").normalize();
 
     private static Path findProjectRoot() {
-        Path dir = Paths.get(System.getProperty("user.dir"));
-        while (dir != null) {
-            if (Files.exists(dir.resolve("settings.gradle"))) return dir;
-            dir = dir.getParent();
+        Path current = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+
+        while (current != null) {
+            if (Files.exists(current.resolve("settings.gradle"))) {
+                return current;
+            }
+            current = current.getParent();
         }
-        throw new RuntimeException("Cannot find project root (settings.gradle)");
+
+        // Running as a standalone JAR:
+        // use the directory containing the JAR / current working directory.
+        return Paths.get(System.getProperty("user.dir")).toAbsolutePath();
     }
 
     private static final Path USERS_DIR = DATA_DIR.resolve("users");
