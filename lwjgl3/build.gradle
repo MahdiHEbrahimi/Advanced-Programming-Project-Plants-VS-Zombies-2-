@@ -65,7 +65,6 @@ run {
 
 processResources {
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-  exclude('pvz-assets/**')
 }
 
 jar {
